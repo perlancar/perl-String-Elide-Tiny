@@ -1,15 +1,22 @@
 package String::Elide::Tiny;
 
-# DATE
-# VERSION
-
 # be tiny
-#use strict 'subs', 'vars';
-#use warnings;
+#IFUNBUILT
+use strict;
+use warnings;
+#END IFUNBUILT
+
+# AUTHORITY
+# DATE
+# DIST
+# VERSION
 
 sub import {
     my $pkg = shift;
     my $caller = caller;
+#IFUNBUILT
+no strict 'refs';
+#END IFUNBUILT
     for my $sym (@_) {
         if ($sym eq 'elide') { *{"$caller\::$sym"} = \&{$sym} }
         else { die "$sym is not exported!" }
@@ -19,6 +26,8 @@ sub import {
 sub elide {
     my ($str, $max_len, $opts) = @_;
 
+    die "Please specify str" unless defined $str;
+    die "Please specify max_len" unless defined $max_len;
     $opts ||= {};
 
     my $str_len = length $str;
