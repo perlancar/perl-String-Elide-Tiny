@@ -28,15 +28,17 @@ sub elide {
 
     die "Please specify str" unless defined $str;
     die "Please specify max_len" unless defined $max_len;
+
+    return "" if $max_len <= 0;
+
     $opts ||= {};
 
     my $str_len = length $str;
+    return $str if $str_len <= $max_len;
 
     my $marker = defined $opts->{marker} ? $opts->{marker} : "...";
     my $marker_len = length $marker;
     return substr($marker, 0, $max_len) if $max_len < $marker_len;
-
-    return $str if $str_len <= $max_len;
 
     my $truncate = $opts->{truncate} || 'right';
     if ($truncate eq 'left') {
